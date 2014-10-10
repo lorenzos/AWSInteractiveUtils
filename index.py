@@ -19,10 +19,6 @@ def make_label(filename):
 # Get the files list
 directory = os.path.abspath(os.path.dirname(__file__))
 files = os.listdir(directory)
-files.append('Z')
-files.append('z')
-files.append('a')
-files.append('_hiMappy_-_backup.py')
 files.sort(cmp = file_compare)
 
 # Build the scripts list
