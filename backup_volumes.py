@@ -43,7 +43,7 @@ if len(backups) > 0:
 		snapshot = backup['volume'].create_snapshot(backup['description'] if backup['description'] != 0 else None)
 		snapshot_name = snapshot_name_re.sub(' ', backup['volume_name']).strip() + snapshot_name_suffix
 		connection.create_tags(snapshot.id, { 'Name': snapshot_name })
-		print Fore.GREEN + 'Creating snapshot ' + Style.BRIGHT + snapshot_name + Style.NORMAL + ' (' + snapshot.id + ') with size ' + str(snapshot.volume_size) + 'GB...'
+		print Fore.GREEN + 'Creating snapshot ' + Style.BRIGHT + snapshot_name + Style.NORMAL + ' (' + snapshot.id + ') with size ' + str(snapshot.volume_size) + 'GB...' + Style.RESET_ALL
 		snapshots_ids.append(snapshot.id)
 	
 	print
@@ -55,10 +55,10 @@ if len(backups) > 0:
 		end = True
 		for snapshot in connection.get_all_snapshots(snapshot_ids = snapshots_ids, owner = 'self'):
 			completed = snapshot.status == 'completed' and snapshot.progress == '100%'
-			print (Fore.GREEN if completed else Fore.YELLOW) + 'Snapshot ' + Style.BRIGHT + snapshot.tags.get('Name', '(no name)') + Style.NORMAL + ' ' + snapshot.status + ' (' + (snapshot.progress or '0%')  + ')...'
+			print (Fore.GREEN if completed else Fore.YELLOW) + 'Snapshot ' + Style.BRIGHT + snapshot.tags.get('Name', '(no name)') + Style.NORMAL + ' ' + snapshot.status + ' (' + (snapshot.progress or '0%')  + ')...' + Style.RESET_ALL
 			end = end and completed
 		print
 	
-	print Fore.GREEN + Style.BRIGHT + 'All snapshop created and completed.' + Fore.RESET,
+	print Fore.GREEN + Style.BRIGHT + 'All snapshop created and completed.' + Style.RESET_ALL,
 	raw_input()
 
