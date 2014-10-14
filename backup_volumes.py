@@ -22,7 +22,7 @@ print
 
 connection = ec2.connect_to_region(REGION, profile_name = PROFILE_NAME)
 
-# Chiedi quali volumi backappare e la descrizione
+# Ask which volumes to backup and their snapshot description
 backups = []
 for volume in connection.get_all_volumes():
 	if volume.tags.get('NoBackup', '0') != '1':
@@ -35,7 +35,7 @@ if len(backups) > 0:
 	
 	print
 	
-	# Crea gli snapshots
+	# Create snapshots
 	snapshots_ids = []
 	snapshot_name_re = re.compile(' ?volume ?', re.IGNORECASE)
 	snapshot_name_suffix = ' @{:%Y-%m-%d}'.format(datetime.now())
@@ -48,7 +48,7 @@ if len(backups) > 0:
 	
 	print
 	
-	# Controlla il progresso ogni 5 secondi
+	# Check progress every 5 seconds
 	end = False
 	while not end:
 		time.sleep(5)
