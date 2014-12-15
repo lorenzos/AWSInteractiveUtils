@@ -53,6 +53,6 @@ while True:
 		execfile(directory + '/' + scripts[selection]['filename'])
 		
 	except Exception as x:
-		print Fore.RED + Style.BRIGHT + 'ERROR: ' + Style.NORMAL,
+		print Fore.RED + Style.BRIGHT + 'ERROR:' + Style.NORMAL,
 		print x,
 		print Style.RESET_ALL
