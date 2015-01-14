@@ -46,5 +46,5 @@ if len(instances) > 0:
 		instance_dns = instance['instance'].public_dns_name
 		instance_ip = instance['instance'].ip_address.strip()
 		terminal_title = instance['instance_name'] + ' UPDATE (' + (instance_ip or instance_dns) + ')'
-		subprocess.call(TERMINAL + ' --title="' + terminal_title + '" --command=\'ssh -t -i "' + SSH_CERTIFICATE + '" ubuntu@' + instance_dns + ' "' + UPDATE_COMMAND + '"\'', shell=True)
+		subprocess.call(TERMINAL + ' --title="' + terminal_title + '" --command=\'ssh -t -i "' + SSH_CERTIFICATE + '" ubuntu@' + (instance_ip or instance_dns) + ' "' + UPDATE_COMMAND + '"\'', shell=True)
 	
