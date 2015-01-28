@@ -34,7 +34,7 @@ connection = ec2.connect_to_region(REGION, profile_name = PROFILE_NAME)
 # Ask which instances
 instances = []
 for instance in connection.get_only_instances():
-	if instance.state == 'running' and instance.tags.get('NoUpdate', '0') != '1':
+	if instance.state == 'running' and instance.tags.get('NoUpdate', '0') != '1' and instance.platform != 'windows':
 		instance_name = instance.tags.get('Name', '(no name)')
 		if questionYN('Do you want to update instance ' + Style.BRIGHT + '{}' + Style.RESET_ALL + ' ({})', instance_name, instance.id):
 			instances.append({ 'instance': instance, 'instance_name': instance_name })
