@@ -54,8 +54,8 @@ if len(backups) > 0:
 		time.sleep(5)
 		end = True
 		for snapshot in connection.get_all_snapshots(snapshot_ids = snapshots_ids, owner = 'self'):
-			completed = snapshot.status == 'completed' and snapshot.progress == '100%'
-			print (Fore.GREEN if completed else Fore.YELLOW) + 'Snapshot ' + Style.BRIGHT + snapshot.tags.get('Name', '(no name)') + Style.NORMAL + ' ' + snapshot.status + ' (' + (snapshot.progress or '0')  + '%)...' + Style.RESET_ALL
+			completed = snapshot.status == 'completed' and snapshot.progress.rstrip('%') == '100'
+			print (Fore.GREEN if completed else Fore.YELLOW) + 'Snapshot ' + Style.BRIGHT + snapshot.tags.get('Name', '(no name)') + Style.NORMAL + ' ' + snapshot.status + ' (' + (snapshot.progress.rstrip('%') or '0')  + '%)...' + Style.RESET_ALL
 			end = end and completed
 		print
 	
