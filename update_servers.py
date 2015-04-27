@@ -14,7 +14,7 @@ UPDATE_COMMAND = ' && '.join([
 	'sudo apt-get clean',
 	'sudo apt-get autoclean',
 	'sudo apt-get autoremove',
-	'if [ -f /var/run/reboot-required ]; then echo; echo === SYSTEM REBOOT REQUIRED! ===; echo; fi',
+	'if [ -f /var/run/reboot-required ]; then echo; echo "=== SYSTEM REBOOT REQUIRED! ==="; read -p "Do you want to reboot now (y|n)? " -r; if [[ $REPLY =~ ^[Yy] ]]; then sudo shutdown -r now; fi; echo; fi',
 	'bash'
 ])
 
@@ -40,6 +40,9 @@ for instance in connection.get_only_instances():
 			instances.append({ 'instance': instance, 'instance_name': instance_name })
 
 if len(instances) > 0:
+	
+	# Escape command
+	UPDATE_COMMAND = UPDATE_COMMAND.replace("\\", "\\\\").replace("'", "'\\''").replace('"', '\\"')
 	
 	# Start SSH on instances
 	for instance in instances:
