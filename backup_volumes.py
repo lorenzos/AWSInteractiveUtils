@@ -29,7 +29,7 @@ for volume in connection.get_all_volumes():
 		volume_name = volume.tags.get('Name', '(no name)')
 		if questionYN('Do you want to backup volume ' + Style.BRIGHT + '{}' + Style.NORMAL + ' ({})', volume_name, volume.id):
 			description = questionInput(Fore.BLUE + ' -> Insert snapshot description for ' + Style.BRIGHT + '{}' + Style.RESET_ALL, volume_name)
-			backups.append({ 'volume': volume, 'volume_name': volume_name, 'description': description })
+			backups.append({ 'volume': volume, 'volume_name': volume_name, 'description': description, 'volume_tags': volume.tags })
 
 if len(backups) > 0:
 	
@@ -42,7 +42,9 @@ if len(backups) > 0:
 	for backup in backups:
 		snapshot = backup['volume'].create_snapshot(backup['description'] if backup['description'] != 0 else None)
 		snapshot_name = snapshot_name_re.sub(' ', backup['volume_name']).strip() + snapshot_name_suffix
-		connection.create_tags(snapshot.id, { 'Name': snapshot_name })
+		snapshot_tags = backup['volume_tags'] # Inherit tags from volume...
+		snapshot_tags['Name'] = snapshot_name # ...but customize the name tag
+		connection.create_tags(snapshot.id, snapshot_tags)
 		print Fore.GREEN + 'Creating snapshot ' + Style.BRIGHT + snapshot_name + Style.NORMAL + ' (' + snapshot.id + ') with size ' + str(snapshot.volume_size) + 'GB...' + Style.RESET_ALL
 		snapshots_ids.append(snapshot.id)
 	
