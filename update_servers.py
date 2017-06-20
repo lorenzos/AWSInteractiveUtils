@@ -6,7 +6,7 @@
 ### CONFIGURATION
 REGION = 'eu-west-1'
 PROFILE_NAME = 'InstanceLister'
-TERMINAL = 'xfce4-terminal'
+TERMINAL = 'xfce4-terminal -H'
 SSH_CERTIFICATE = '/home/lorenzo/.certificates/david-1.pem'
 UPDATE_COMMAND = ' && '.join([
 	'sudo apt-get update',
