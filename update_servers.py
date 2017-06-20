@@ -7,7 +7,7 @@
 REGION = 'eu-west-1'
 PROFILE_NAME = 'InstanceLister'
 TERMINAL = 'xfce4-terminal -H'
-SSH_CERTIFICATE = '/home/lorenzo/.certificates/david-1.pem'
+SSH_CERTIFICATE = ['/home/lorenzo/.certificates/david-1.pem', '/home/lorenzo/.certificates/david-1-pocket-sell-app.pem']
 UPDATE_COMMAND = ' && '.join([
 	'sudo apt-get update',
 	'sudo apt-get upgrade',
@@ -44,10 +44,14 @@ if len(instances) > 0:
 	# Escape command
 	UPDATE_COMMAND = UPDATE_COMMAND.replace("\\", "\\\\").replace("'", "'\\''").replace('"', '\\"')
 	
+	# SSH certificates
+	certificates = (SSH_CERTIFICATE if isinstance(SSH_CERTIFICATE, list) else [SSH_CERTIFICATE])
+	certificates_command = ' '.join(['-i "' + path + '"' for path in certificates])
+	
 	# Start SSH on instances
 	for instance in instances:
 		instance_dns = instance['instance'].public_dns_name
 		instance_ip = instance['instance'].ip_address.strip()
 		terminal_title = instance['instance_name'] + ' UPDATE (' + (instance_ip or instance_dns) + ')'
-		subprocess.call(TERMINAL + ' --title="' + terminal_title + '" --command=\'ssh -t -i "' + SSH_CERTIFICATE + '" ubuntu@' + (instance_ip or instance_dns) + ' "' + UPDATE_COMMAND + '"\'', shell=True)
+		subprocess.call(TERMINAL + ' --title="' + terminal_title + '" --command=\'ssh -t ' + certificates_command + ' ubuntu@' + (instance_ip or instance_dns) + ' "' + UPDATE_COMMAND + '"\'', shell=True)
 	
