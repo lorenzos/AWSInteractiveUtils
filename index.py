@@ -27,6 +27,9 @@ for script in files:
 	if script[-3:] == '.py' and script[0:7] != 'commons' and script != 'index.py' and script[0] != '.':
 		scripts.append({ 'filename': script, 'label': make_label(script) })
 
+# Defalut script already selected using the first command line arg?
+initial = sys.argv[1] if len(sys.argv) > 1 else None
+
 # Loop on scripts
 while True:
 	print Style.RESET_ALL
@@ -40,6 +43,9 @@ while True:
 	
 	# Parse selection
 	selection = -1
+	if initial and initial.isdigit():
+		selection = int(initial) - 1
+		initial = None
 	while selection < 0 or selection >= len(scripts):
 		selection = raw_input('Type a number to select, or press ENTER to exit: ').strip()
 		if selection == '': 
