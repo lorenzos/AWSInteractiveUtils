@@ -26,6 +26,7 @@ scripts = []
 for script in files:
 	if script[-3:] == '.py' and script[0:7] != 'commons' and script != 'index.py' and script[0] != '.':
 		scripts.append({ 'filename': script, 'label': make_label(script) })
+scripts = sorted(scripts, key=lambda d: d['label']) 
 
 # Defalut script already selected using the first command line arg?
 initial = sys.argv[1] if len(sys.argv) > 1 else None
