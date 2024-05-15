@@ -16,9 +16,9 @@ from datetime import datetime
 from boto import ec2
 from colorama import Fore, Back, Style
 
-execfile(os.path.abspath(os.path.dirname(__file__)) + '/commons.py')
+exec(compile(open(os.path.abspath(os.path.dirname(__file__)) + '/commons.py', "rb").read(), os.path.abspath(os.path.dirname(__file__)) + '/commons.py', 'exec'))
 printTitle('EC2 VOLUME BACKUP', 'Backups volumes creating snapshots, excluding volumes with tag NoBackup=1')
-print 
+print() 
 
 connection = ec2.connect_to_region(REGION, profile_name = PROFILE_NAME)
 
@@ -33,7 +33,7 @@ for volume in connection.get_all_volumes():
 
 if len(backups) > 0:
 	
-	print
+	print()
 	
 	# Create snapshots
 	snapshots_ids = []
@@ -45,10 +45,10 @@ if len(backups) > 0:
 		snapshot_tags = backup['volume_tags'] # Inherit tags from volume...
 		snapshot_tags['Name'] = snapshot_name # ...but customize the name tag
 		connection.create_tags(snapshot.id, snapshot_tags)
-		print Fore.GREEN + 'Creating snapshot ' + Style.BRIGHT + snapshot_name + Style.NORMAL + ' (' + snapshot.id + ') with size ' + str(snapshot.volume_size) + 'GB...' + Style.RESET_ALL
+		print(Fore.GREEN + 'Creating snapshot ' + Style.BRIGHT + snapshot_name + Style.NORMAL + ' (' + snapshot.id + ') with size ' + str(snapshot.volume_size) + 'GB...' + Style.RESET_ALL)
 		snapshots_ids.append(snapshot.id)
 	
-	print
+	print()
 	
 	# Check progress every 5 seconds
 	end = False
@@ -57,10 +57,10 @@ if len(backups) > 0:
 		end = True
 		for snapshot in connection.get_all_snapshots(snapshot_ids = snapshots_ids, owner = 'self'):
 			completed = snapshot.status == 'completed' and snapshot.progress.rstrip('%') == '100'
-			print (Fore.GREEN if completed else Fore.YELLOW) + 'Snapshot ' + Style.BRIGHT + snapshot.tags.get('Name', '(no name)') + Style.NORMAL + ' ' + snapshot.status + ' (' + (snapshot.progress.rstrip('%') or '0')  + '%)...' + Style.RESET_ALL
+			print((Fore.GREEN if completed else Fore.YELLOW) + 'Snapshot ' + Style.BRIGHT + snapshot.tags.get('Name', '(no name)') + Style.NORMAL + ' ' + snapshot.status + ' (' + (snapshot.progress.rstrip('%') or '0')  + '%)...' + Style.RESET_ALL)
 			end = end and completed
-		print
+		print()
 	
-	print Fore.GREEN + Style.BRIGHT + 'All snapshop created and completed.' + Style.RESET_ALL,
-	raw_input()
+	print(Fore.GREEN + Style.BRIGHT + 'All snapshop created and completed.' + Style.RESET_ALL, end=' ')
+	input()
 

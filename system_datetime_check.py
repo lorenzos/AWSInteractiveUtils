@@ -23,9 +23,9 @@ import subprocess
 from boto import ec2
 from colorama import Fore, Back, Style
 
-execfile(os.path.abspath(os.path.dirname(__file__)) + '/commons.py')
+exec(compile(open(os.path.abspath(os.path.dirname(__file__)) + '/commons.py', "rb").read(), os.path.abspath(os.path.dirname(__file__)) + '/commons.py', 'exec'))
 printTitle('SYSTEM DATE/TIME CHECK', 'Connects to all instances and checks the date-time offset')
-print 
+print() 
 
 connection = ec2.connect_to_region(REGION, profile_name = PROFILE_NAME)
 

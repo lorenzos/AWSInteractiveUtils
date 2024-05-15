@@ -25,9 +25,9 @@ import subprocess
 from boto import ec2
 from colorama import Fore, Back, Style
 
-execfile(os.path.abspath(os.path.dirname(__file__)) + '/commons.py')
+exec(compile(open(os.path.abspath(os.path.dirname(__file__)) + '/commons.py', "rb").read(), os.path.abspath(os.path.dirname(__file__)) + '/commons.py', 'exec'))
 printTitle('EC2 INSTANCES UPDATE', 'Runs apt-get to update instances, excluding ones with tag NoUpdate=1')
-print 
+print() 
 
 connection = ec2.connect_to_region(REGION, profile_name = PROFILE_NAME)
 
