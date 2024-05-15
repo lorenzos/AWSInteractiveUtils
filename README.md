@@ -9,10 +9,10 @@ Requirements
 All script are written in Python using the [`boto`][boto] interface to Amazon Web Services.
 The [`colorama`][colorama] module is used to provide colored terminal text.
 
-	wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
-	sudo python2 get-pip.py && rm get-pip.py
-	python2 -m pip install boto
-	python2 -m pip install colorama
+	sudo apt update && sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+	curl https://pyenv.run | bash
+	pyenv install 3.11
+	pip3 install boto colorama
 
 [boto]: http://boto.readthedocs.org/en/latest/index.html
 [colorama]: https://pypi.python.org/pypi/colorama/
@@ -47,13 +47,13 @@ of the code: you likely have to edit some of them, such as `REGION`,
 `SSH_CERTIFICATE`, and so on. Then you can simply run a specific utility 
 with the Python interpreter, for example the one which backups volumes:
 
-	python2 backup_volumes.py
+	python3 backup_volumes.py
 
 Or you can run the `index.py` script, which lists all available
 scripts (also your custom and private ones) and interactively asks you 
 which to run:
 
-	python2 index.py
+	python3 index.py
 
 I shared these utilities mainly because you can use as a starting point
 to write your own scripts. Remember that, for this exact reason, all Python
